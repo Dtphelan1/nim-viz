@@ -29,7 +29,7 @@ export default class MatchGame extends Component {
         this.PLAYER_AI = 1;
 
         const numberOfRows = 4;
-        const matchCounts = this.initializeMatchesArray(numberOfRows)
+        const matchCounts = this._initializeMatchesArray(numberOfRows)
         this.state = {
             numberOfRows: numberOfRows,
             matches: matchCounts,
@@ -40,7 +40,7 @@ export default class MatchGame extends Component {
     }
 
     // Initialize our initial counts of matches based on the number of rows 
-    initializeMatchesArray(numberOfRows) {
+    _initializeMatchesArray(numberOfRows) {
         const matchCounts = [];
         for (let i = 0; i < numberOfRows; i++) { 
             matchCounts.push(1 + (2 * i)) 
@@ -77,6 +77,7 @@ export default class MatchGame extends Component {
         }
     }
 
+    // 
 
     render() { 
         // Game is made up of these pieces 
@@ -99,9 +100,12 @@ export default class MatchGame extends Component {
         // Row should highlight on hover when no row has been selected; 
         // Each row should have +/- buttons 
         // 
+        const { matches, numberOfRows, matchCounts } = this.state;
         return (
             <MatchesOriginal
                 matches={this.state.matches}
+                incrementMatches={this.incrementMatches}
+                decrementMatches={this.decrementMatches}
             />
         );
     }

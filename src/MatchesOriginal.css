@@ -1,0 +1,7 @@
+.match-row {
+  display:block;
+}
+
+.match-row:hover {
+  background: #fcc;
+}

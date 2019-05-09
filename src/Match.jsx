@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 export default class Match extends Component {
     handleClick = (e) => { 
         e.preventDefault();
-        this.props.handleClick();
+        // this.props.handleClick();
     }
 
     render () {

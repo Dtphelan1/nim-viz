@@ -1,9 +1,23 @@
-import React, { Component } from 'react';
-import Match from "./Match.jsx"
+import React, { Component, Fragment } from 'react';
+import Match from "./Match.jsx";
+import './MatchesOriginal.css'
+import _ from 'lodash';
 export default class MatchesOriginal extends Component {
-    render () { 
+    render () {
+        const { matches } = this.props;
         return (
-            <Match/>
+            <Fragment>
+                {matches.map((count, i) => {
+                    return (
+                        <div className="match-row" key={i}>
+                            {_.times(count, () => { 
+                                return <Match/>
+                            })}
+                        </div>
+                    );
+                })}
+
+            </Fragment>
         ); 
     }
 }
