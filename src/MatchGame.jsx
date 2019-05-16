@@ -50,7 +50,11 @@ export default class MatchGame extends Component {
 
     // Increments the current count for the matches in the 'ith' row, being careful to not go above the previous highest value for that row
     incrementMatches = (i) => {
-        const prevMax = this.state.prevMatches[i];
+        console.log('i: ', i);
+        console.log('this.state: ', this.state);
+        console.log('this.state.previousMatches: ', this.state.previousMatches);
+        const prevMax = this.state.previousMatches[i];
+        console.log('prevMax: ', prevMax);
         const curCount = this.state.matches[i];
         if (curCount + 1 > prevMax) {
             return
@@ -65,12 +69,14 @@ export default class MatchGame extends Component {
 
     // Decremenets the current count for the matches in the 'ith' row, being careful to not go below 0;
     decrementMatches = (i) => {
+        console.log('i: ', i);
         const curCount = this.state.matches[i];
+        console.log('curCount: ', curCount);
         if (curCount - 1 < 0) {
             return
         } else {
             const matchesWithDec = [...this.state.matches];
-            matchesWithDec[i] += 1;
+            matchesWithDec[i] -= 1;
             this.setState({
                 matches: matchesWithDec
             });

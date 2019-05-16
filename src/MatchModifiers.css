@@ -1,0 +1,7 @@
+.match-modifier-btns {
+  height: 30px;
+  display: flex;
+}
+.btn { 
+  margin: 0 5px;
+}

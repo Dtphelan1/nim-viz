@@ -1,7 +1,13 @@
 .match-row {
-  display:block;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .match-row:hover {
   background: #fcc;
+}
+
+.matches-fixed-width-container { 
+  width: 700px;
 }
