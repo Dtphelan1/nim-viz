@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
-import MatchesOriginal from './MatchesOriginal.jsx'
+import React, { Component, Fragment } from 'react';
+import MatchesOriginal from './MatchesOriginal.jsx';
+import TurnActionBar from './TurnActionBar.jsx';
+import _ from 'lodash';
 // import MatchesLeftCollapsed from './MatchesLeftCollapsed.jsx'
 // import MatchesAsDecimal from './MatchesAsDecimal.jsx'
 // import MatchesAsBinary from './MatchesAsBinary.jsx'
@@ -28,56 +30,166 @@ export default class MatchGame extends Component {
         this.PLAYER_USER = 0;
         this.PLAYER_AI = 1;
 
-        const numberOfRows = 4;
-        const matchCounts = this._initializeMatchesArray(numberOfRows)
+        // Configuration of Game State:
+        // TODO: Move into state once modifiable;
+        this.numberOfRows = 4;
+        this.userGoesFirst = true;
+
+        const matchCounts = this._initializeMatchesArray()
         this.state = {
-            numberOfRows: numberOfRows,
-            matches: matchCounts,
-            previousMatches: matchCounts,
-            userGoesFirst: true,
+            provisionalMatches: matchCounts,
+            initialMatchesOnTurn: matchCounts,
             currentPlayer: this.PLAYER_USER
         }
     }
 
+    // Handle the automated turns of the AI anytime the screen updates
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(this.state.currentPlayer === this.PLAYER_AI) { 
+            this._AITurn()
+        }
+    }
+
     // Initialize our initial counts of matches based on the number of rows 
-    _initializeMatchesArray(numberOfRows) {
+    _initializeMatchesArray() {
         const matchCounts = [];
-        for (let i = 0; i < numberOfRows; i++) { 
+        for (let i = 0; i < this.numberOfRows; i++) { 
             matchCounts.push(1 + (2 * i)) 
         }
         return matchCounts;
     }
 
+    // Internally defined function for transitioning from one turn to the next
+    _nextPlayer() {
+        switch(this.state.currentPlayer) {
+            case this.PLAYER_AI:
+                return this.PLAYER_USER;
+            case this.PLAYER_USER:
+                return this.PLAYER_AI;
+            default: 
+                console.error(`Switching current player but the turn-switch mechanic is undefined for this player ${this.state.currentPlayer}`);
+                return null;
+        }
+    }
+
+    // Propagate our matche
+    updateMatches = (optionalMatches) => {
+        console.log('updateMatches: ');
+        // Use the argument if provided; else use the current matches
+        const newMatches = optionalMatches ? optionalMatches : this.state.provisionalMatches
+        console.log('newMatches: ', newMatches);
+        this.setState({
+            initialMatchesOnTurn: newMatches,
+            provisionalMatches: newMatches
+        });
+    }
+
     // Increments the current count for the matches in the 'ith' row, being careful to not go above the previous highest value for that row
     incrementMatches = (i) => {
-        const prevMax = this.state.previousMatches[i];
-        const curCount = this.state.matches[i];
+        const prevMax = this.state.initialMatchesOnTurn[i];
+        const curCount = this.state.provisionalMatches[i];
         if (curCount + 1 > prevMax) {
             return
         } else {
-            const matchesWithInc = [...this.state.matches];
+            const matchesWithInc = [...this.state.provisionalMatches];
             matchesWithInc[i] += 1;
             this.setState({
-                matches: matchesWithInc
+                provisionalMatches: matchesWithInc
             });
         }
     }
 
     // Decremenets the current count for the matches in the 'ith' row, being careful to not go below 0;
     decrementMatches = (i) => {
-        const curCount = this.state.matches[i];
+        const curCount = this.state.provisionalMatches[i];
         if (curCount - 1 < 0) {
             return
         } else {
-            const matchesWithDec = [...this.state.matches];
+            const matchesWithDec = [...this.state.provisionalMatches];
             matchesWithDec[i] -= 1;
             this.setState({
-                matches: matchesWithDec
+                provisionalMatches: matchesWithDec
             });
         }
     }
 
-    // 
+    // Resets the matches to how they were oriented at the beginning of the turn
+    resetTurn = () => {
+        this.setState({
+            provisionalMatches: this.state.initialMatchesOnTurn
+        });
+    }
+
+    // Switches the current player 
+    switchCurrentPlayer = () => {
+        const nextPlayer = this._nextPlayer();
+        this.setState({
+            currentPlayer: nextPlayer
+        });
+    }
+
+    // TODO: Better name;
+    // Finding a move baed on the nimSum: find a row with matchCount 'x' for which x > 0 && x ^ nimSum < x;
+    // Return the index of the current row, and the original count minus the XOR value 
+    _getMoveBasedOnSum(nimSum) {
+        console.log('_getMoveBasedOnSum: ');
+        // Have an illegal index initially 
+        let index = -1;
+        let valueToRemove = 0;
+        this.state.provisionalMatches.forEach((count, curIndex) => {
+            // Stop iterating if we have a value to remove; i.e. if index is legal
+            if (index >= 0) return; 
+            console.log('count: ', count);
+            console.log('curIndex: ', curIndex);
+            console.log('count ^ nimSum: ', count ^ nimSum);
+            if ((count > 0) && ((count ^ nimSum) < count)) {
+                console.log("Found a good row!") 
+                index = curIndex;
+                valueToRemove = count - (count ^ nimSum);
+            }
+        });
+        return [index, valueToRemove]; 
+    }
+
+    _AITurn= () =>{
+        // Determine if we are near endgame moves or not.
+        // If we are near endgame moves, 
+        // If there's just one match left, remove that match;
+        // If there's just one valid row left, remove until their is one match left in that row;
+        // We can determine the maximial value to remove by XOR'ing all vals together; 
+        // If we get 0, we are indifferent about which value we should remove;
+        // If we get any other integer value, we should remove that from any row we can;
+
+        // First, get the nim sum of all the remaining match-rows, i.e. XOR all counts together
+        const nimSum = _.reduce(this.state.provisionalMatches, (count, nimSum) => count ^ nimSum, 0);
+        console.log('nimSum: ', nimSum);
+        // Then, get the next value to remove and the index from the nimSum - if there is such a move
+        const [index, valueToRemove] = this._getMoveBasedOnSum(nimSum);
+        if (index === -1) {
+            console.log("Index is -1 - no traditional removals available");
+        } else {
+            const newMatches = [...this.state.provisionalMatches];
+            newMatches[index] -= valueToRemove;
+            console.log('newMatches: ', newMatches);
+            this.finalizeTurn(newMatches)
+        }
+    }
+
+    finalizeTurn = (optionalMatches) => {
+        this.updateMatches(optionalMatches);
+        this.switchCurrentPlayer();
+    }
+
+    // Restarts the game to it's initial configuration
+    restartGame = () => {
+        const initialMatches = this._initializeMatchesArray();
+        console.log('initialMatches: ', initialMatches);
+        this.setState({
+            provisionalMatches: initialMatches,
+            initialMatchesOnTurn: initialMatches,
+            currentPlayer: this.userGoesFirst ? this.PLAYER_USER : this.PLAYER_AI
+        });
+    }
 
     render() { 
         // Game is made up of these pieces 
@@ -100,13 +212,19 @@ export default class MatchGame extends Component {
         // Row should highlight on hover when no row has been selected; 
         // Each row should have +/- buttons 
         // 
-        const { matches, numberOfRows, matchCounts } = this.state;
         return (
-            <MatchesOriginal
-                matches={this.state.matches}
-                incrementMatches={this.incrementMatches}
-                decrementMatches={this.decrementMatches}
-            />
+            <Fragment>
+                <MatchesOriginal
+                    matches={this.state.provisionalMatches}
+                    incrementMatches={this.incrementMatches}
+                    decrementMatches={this.decrementMatches}
+                />
+                <TurnActionBar
+                    restartGame={this.restartGame}
+                    resetTurn={this.resetTurn}
+                    finalizeTurn={this.finalizeTurn}
+                />
+            </Fragment>
         );
     }
 }
