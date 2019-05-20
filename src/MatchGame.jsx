@@ -148,6 +148,7 @@ export default class MatchGame extends Component {
             console.log('count: ', count);
             console.log('curIndex: ', curIndex);
             console.log('count ^ nimSum: ', count ^ nimSum);
+            // TODO: Get rid of > 0 check; will never satisfy the second case if <=0 
             if ((count > 0) && ((count ^ nimSum) < count)) {
                 console.log("Found a good row!") 
                 index = curIndex;
