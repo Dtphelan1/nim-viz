@@ -4,10 +4,10 @@ import MatchModifiers from "./MatchModifiers.jsx";
 import './MatchesOriginal.css'
 import _ from 'lodash';
 export default function MatchesOriginal (props) {
-    const { matches, incrementMatches, decrementMatches } = props;
+    const { provisionalMatches, initialMatchesOnTurn, incrementMatches, decrementMatches } = props;
     return (
         <Fragment>
-            {matches.map((count, i) => {
+            {provisionalMatches.map((count, i) => {
                 return (
                     <div className="match-row" key={i}>
                         <span className="matches-fixed-width-container">
@@ -18,7 +18,7 @@ export default function MatchesOriginal (props) {
                         <MatchModifiers
                             currentMatch={i}
                             //TODO: Make this more generic
-                            maxMatches={count === (1 + (i * 2))}
+                            maxMatches={count === initialMatchesOnTurn[i]}
                             minMatches={count === 0}
                             incrementMatches={incrementMatches}
                             decrementMatches={decrementMatches}

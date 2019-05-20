@@ -45,7 +45,13 @@ export default class MatchGame extends Component {
 
     // Handle the automated turns of the AI anytime the screen updates
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(this.state.currentPlayer === this.PLAYER_AI) { 
+        if (_.max(this.state.initialMatchesOnTurn) === 0) {
+            // First - check to see if there is a winner:
+            const winner = this.state.currentPlayer === this.PLAYER_AI ? "AI" : "User";
+            // The winner is the first person to start their turn with a 0 maxMatches
+            console.log("Congratulations on winning " + winner + "!");
+        } else if(this.state.currentPlayer === this.PLAYER_AI) { 
+            // Else, if the AI's turn is up let the algo go!
             this._AITurn()
         }
     }
@@ -152,26 +158,32 @@ export default class MatchGame extends Component {
     }
 
     _AITurn= () =>{
-        // Determine if we are near endgame moves or not.
-        // If we are near endgame moves, 
-        // If there's just one match left, remove that match;
-        // If there's just one valid row left, remove until their is one match left in that row;
-        // We can determine the maximial value to remove by XOR'ing all vals together; 
-        // If we get 0, we are indifferent about which value we should remove;
-        // If we get any other integer value, we should remove that from any row we can;
-
-        // First, get the nim sum of all the remaining match-rows, i.e. XOR all counts together
-        const nimSum = _.reduce(this.state.provisionalMatches, (count, nimSum) => count ^ nimSum, 0);
-        console.log('nimSum: ', nimSum);
-        // Then, get the next value to remove and the index from the nimSum - if there is such a move
-        const [index, valueToRemove] = this._getMoveBasedOnSum(nimSum);
-        if (index === -1) {
-            console.log("Index is -1 - no traditional removals available");
-        } else {
-            const newMatches = [...this.state.provisionalMatches];
-            newMatches[index] -= valueToRemove;
-            console.log('newMatches: ', newMatches);
-            this.finalizeTurn(newMatches)
+        // Strategy can be broken up into two modes: Endgame and typical
+        // First, check to see if we are in an endgame orientation - specifically, if there is <= 1 row left with more than one match
+        const curMatches = this.state.provisionalMatches;
+        const isEndGame = _.reduce(curMatches, (acc, count) => count > 1 ? acc + 1 : acc, 0) <= 1;
+        if (isEndGame) {
+            // Calc the # of remaining turns by looking at the non-zero rows
+            const remainingTurns = _.reduce(curMatches, (acc, count) => count > 0 ? acc + 1 : acc, 0);
+            const maxVal = _.max(curMatches);
+            const indexOfMax = curMatches.indexOf(maxVal)
+            const newMatches = [...curMatches];
+            newMatches[indexOfMax] -= maxVal;
+            this.finalizeTurn(newMatches);
+        } else { 
+            // First, get the nim sum of all the remaining match-rows, i.e. XOR all counts together
+            const nimSum = _.reduce(curMatches, (nimSum, count) => count ^ nimSum, 0);
+            console.log('nimSum: ', nimSum);
+            // Then, get the next value to remove and the index from the nimSum - if there is such a move
+            const [index, valueToRemove] = this._getMoveBasedOnSum(nimSum);
+            if (index === -1) {
+                console.log("Index is -1 - no traditional removals available");
+            } else {
+                const newMatches = [...curMatches];
+                newMatches[index] -= valueToRemove;
+                console.log('newMatches: ', newMatches);
+                this.finalizeTurn(newMatches)
+            }
         }
     }
 
@@ -215,7 +227,8 @@ export default class MatchGame extends Component {
         return (
             <Fragment>
                 <MatchesOriginal
-                    matches={this.state.provisionalMatches}
+                    provisionalMatches={this.state.provisionalMatches}
+                    initialMatchesOnTurn={this.state.initialMatchesOnTurn}
                     incrementMatches={this.incrementMatches}
                     decrementMatches={this.decrementMatches}
                 />
