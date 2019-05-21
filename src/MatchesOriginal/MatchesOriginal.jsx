@@ -11,8 +11,8 @@ export default function MatchesOriginal (props) {
                 return (
                     <div className="match-row" key={i}>
                         <span className="matches-fixed-width-container">
-                            {_.times(count, () => { 
-                                return <Match/>
+                            {_.times(count, (i) => { 
+                                return <Match key={i}/>
                             })}
                         </span>
                         <MatchModifiers

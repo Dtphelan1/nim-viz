@@ -18,7 +18,7 @@ export default function TurnActionBar(props) {
     }
     return (
         <div>
-            <button className="btn btn-outline-primary" onClick={handleRestartClick}>Restat Game</button>
+            <button className="btn btn-outline-primary" onClick={handleRestartClick}>Restart Game</button>
             <button className="btn btn-outline-primary" onClick={handleResetClick}>Reset</button>
             <button className="btn btn-outline-primary" onClick={handleDoneClick}>Done</button>
         </div> 
