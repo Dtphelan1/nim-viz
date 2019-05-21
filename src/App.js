@@ -1,13 +1,10 @@
 import React from 'react';
-import logo from './logo.svg';
-import MatchGame from './MatchGame.jsx';
+import MatchGame from './MatchGame/MatchGame.jsx';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-      </header>
       <h1>
         N I M 
       </h1>

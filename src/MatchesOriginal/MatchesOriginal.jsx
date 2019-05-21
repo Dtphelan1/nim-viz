@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import Match from "./Match.jsx";
-import MatchModifiers from "./MatchModifiers.jsx";
+import Match from "../Match/Match.jsx";
+import MatchModifiers from "../MatchModifiers/MatchModifiers.jsx";
 import './MatchesOriginal.css'
 import _ from 'lodash';
 export default function MatchesOriginal (props) {

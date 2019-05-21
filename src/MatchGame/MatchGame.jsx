@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import MatchesOriginal from './MatchesOriginal.jsx';
-import TurnActionBar from './TurnActionBar.jsx';
+import MatchesOriginal from '../MatchesOriginal/MatchesOriginal.jsx';
+import TurnActionBar from '../TurnActionBar/TurnActionBar.jsx';
 import _ from 'lodash';
 // import MatchesLeftCollapsed from './MatchesLeftCollapsed.jsx'
 // import MatchesAsDecimal from './MatchesAsDecimal.jsx'
@@ -56,9 +56,10 @@ export default class MatchGame extends Component {
         }
     }
 
-    // Initialize our initial counts of matches based on the number of rows 
+    // Return an initialized array of matches based on the number of rows the game has
     _initializeMatchesArray() {
         const matchCounts = [];
+        // For each row 0,1,2,3,... we have, push 1,3,5,7,... matches
         for (let i = 0; i < this.numberOfRows; i++) { 
             matchCounts.push(1 + (2 * i)) 
         }
@@ -76,18 +77,6 @@ export default class MatchGame extends Component {
                 console.error(`Switching current player but the turn-switch mechanic is undefined for this player ${this.state.currentPlayer}`);
                 return null;
         }
-    }
-
-    // Propagate our matche
-    updateMatches = (optionalMatches) => {
-        console.log('updateMatches: ');
-        // Use the argument if provided; else use the current matches
-        const newMatches = optionalMatches ? optionalMatches : this.state.provisionalMatches
-        console.log('newMatches: ', newMatches);
-        this.setState({
-            initialMatchesOnTurn: newMatches,
-            provisionalMatches: newMatches
-        });
     }
 
     // Increments the current count for the matches in the 'ith' row, being careful to not go above the previous highest value for that row
@@ -126,32 +115,89 @@ export default class MatchGame extends Component {
         });
     }
 
-    // Switches the current player 
-    switchCurrentPlayer = () => {
-        const nextPlayer = this._nextPlayer();
-        this.setState({
-            currentPlayer: nextPlayer
-        });
-    }
-
     // TODO: Better name;
     // Finding a move baed on the nimSum: find a row with matchCount 'x' for which x > 0 && x ^ nimSum < x;
     // Return the index of the current row, and the original count minus the XOR value 
-    _getMoveBasedOnSum(nimSum) {
-        console.log('_getMoveBasedOnSum: ');
-        // Have an illegal index initially 
+    _getOptimalMoveBasedOnSum(nimSum) {
+        // Have an illegal index initially; inital value to remove shouldn't matter
         let index = -1;
         let valueToRemove = 0;
+        // Iterate over all our currentMatches
         this.state.provisionalMatches.forEach((count, curIndex) => {
-            // Stop iterating if we have a value to remove; i.e. if index is legal
-            if (index >= 0) return; 
-            console.log('count: ', count);
-            console.log('curIndex: ', curIndex);
-            console.log('count ^ nimSum: ', count ^ nimSum);
-            // TODO: Get rid of > 0 check; will never satisfy the second case if <=0 
-            if ((count > 0) && ((count ^ nimSum) < count)) {
-                console.log("Found a good row!") 
+            ///////////////////////
+            // Our Algorithm //////
+            //// Short, But Verbose
+            ///////////////////////
+            // To determine the ideal valueToRemove, let's think about what we want to end up with and work backwards.
+            //
+            // The optimal (non-endgame) strategy is to remove matches from some target row such that:
+            //  - The nim-sum of all _remaining_ matches is 0;
+            //  - i.e. x_0 ^ x_1 ^ x_target's remaining matches ^ ... ^ x_n = 0
+            // 
+            // Remark 0: 0 ^ x = x for any number x
+            // Remark 1: x ^ x = 0 for any number x
+            // 
+            // One way of achieving our ideal move this is to ensure that: 
+            //  - After modifying our target row, the number of remaining matches should be:
+            //    (x_0 ^ x_1 ^ ... ^ x_n) many matches, since this value will XOR with our remaining matches 
+            //    for a nimSum of 0;
+            // Said another way:
+            //  - Can we remove some 'n' matches from our target row such that
+            //     x_target - n === (x_0 ^ x_1 ^ ... ^ x_n), for all x !== x_target
+            //
+            // Important question yet to be answered: Which row is our target row?!
+            // 
+            // To find x_target, we should iterate over all our rows and check the condition we described above.
+            // Something like, for every row 'i' with matches 'x_i':
+            // - Is there some number of matches 'n' s.t. 
+            //   x_i - n === (x_0 ^ x_1 ^ ... ^ x_n) for all x !== x_i
+            // 
+            // We're looking for the valueToRemove, 'n', so if we move our terms around a bit, we might be done!
+            // - n = 'x_i - (x_0 ^ x_1 ^ ... ^ x_n)' for all x !== x_i
+            // 
+            // Except, minor problem -- 'n' might be negative based on the formula above!
+            // Consider matches [1,5,2]
+            // Row one has x_0 = 1
+            // nimSum of all rows except the first = 7
+            // 1 - 7 = (-6)
+            //
+            // We can't remove a negative number of matches, or add more matches than the number we started with 
+            // One way we can take this into account is by only considering scenarios in which:
+            // - (x_i - n) < x_i
+            // Said another way: 
+            // - '(x_0 ^ x_1 ^ ... ^ x_n) for all x !== x_i' < x_i
+            // By requiring this condition be met, we can ensure that our n is always > 0
+            //
+            // Great! So we have our necessary conditions to check for
+            // We know how to derive n from '(x_0 ^ x_1 ^ ... ^ x_n) for all x !== x_i'
+            // We just need to calculate: '(x_0 ^ x_1 ^ ... ^ x_n) for all x !== x_i'
+            //
+            // Remark 2: We know that our nimSum = (x_0 ^ x_1 ^ ... ^ x_n)
+            // 
+            // Combining remarks 0, 1 and 2, we can calculate '(x_0 ^ x_1 ^ ... ^ x_n) for all x !== x_i' by computing:
+            // - x_i ^ nimSum
+            // Proof of equality fully expanded: 
+            // - x_i ^ x_0 ^ x_1 ^ ... ^ x_i ^ ... ^ x_n) | Expand nimSum
+            // - x_i ^ x_i ^ x_0 ^ ... ^ x_n              | Chained Communitivity of ^ let's us move our x_i together
+            // - 0 ^ x_0 ^ ... ^ x_n                      | From Remark 1, x_i ^ x_i === 0
+            // - x_0 ^ ... ^ x_n for x !== x_i            | From Remark 0, x ^ 0 === x
+            //
+            // One last detail: once we find an optimal number of elements to remove, we can skip all the other rows
+            // 
+            // Putting it all together now, our algorithm is:
+            // - For every row 'i' with matches 'x_i':
+            //      - Compute 'x_0 ^ ... ^ x_n for x !== x_i' by performing x_i ^ nimSum
+            //      - Check that x_0 ^ ... ^ x_n for x !== x_i is less that x_i
+            //      - If it is, 'n' is equal to 'x_i - (x_0 ^ ... ^ x_n for x !== x_i)',
+            //      - Make note that we've got an optimal move to make, so we can skip through all other rows
+            //  - Return the row of interest's index 'i' and the value 'n' to remove 
+
+            if (index !== -1) return;
+            // If the result of count XOR nimSum is < count, this is the row we can remove a value from! 
+            if ((count ^ nimSum) < count) {
+                // Track the index,
                 index = curIndex;
+                // And note our value to remove 
                 valueToRemove = count - (count ^ nimSum);
             }
         });
@@ -166,17 +212,19 @@ export default class MatchGame extends Component {
         if (isEndGame) {
             // Calc the # of remaining turns by looking at the non-zero rows
             const remainingTurns = _.reduce(curMatches, (acc, count) => count > 0 ? acc + 1 : acc, 0);
+            // Get the max value 
             const maxVal = _.max(curMatches);
             const indexOfMax = curMatches.indexOf(maxVal)
             const newMatches = [...curMatches];
-            newMatches[indexOfMax] -= maxVal;
+            // Subtract the maxVal - unless the number
+            newMatches[indexOfMax] -= (maxVal - (remainingTurns % 2));
             this.finalizeTurn(newMatches);
         } else { 
             // First, get the nim sum of all the remaining match-rows, i.e. XOR all counts together
             const nimSum = _.reduce(curMatches, (nimSum, count) => count ^ nimSum, 0);
             console.log('nimSum: ', nimSum);
             // Then, get the next value to remove and the index from the nimSum - if there is such a move
-            const [index, valueToRemove] = this._getMoveBasedOnSum(nimSum);
+            const [index, valueToRemove] = this._getOptimalMoveBasedOnSum(nimSum);
             if (index === -1) {
                 console.log("Index is -1 - no traditional removals available");
             } else {
@@ -188,43 +236,31 @@ export default class MatchGame extends Component {
         }
     }
 
-    finalizeTurn = (optionalMatches) => {
-        this.updateMatches(optionalMatches);
-        this.switchCurrentPlayer();
+    // Finalize a turn by updating matches (using optional arg or current provisional) and switching to the next player
+    finalizeTurn = (optionalMatches=null) => {
+        // New matches are either provided matches or the provisional matches
+        const newMatches = optionalMatches ? optionalMatches : this.state.provisionalMatches
+        const nextPlayer = this._nextPlayer();
+        this.setState({
+            initialMatchesOnTurn: newMatches,
+            provisionalMatches: newMatches,
+            currentPlayer: nextPlayer
+        });
     }
 
     // Restarts the game to it's initial configuration
     restartGame = () => {
+        // Get the inital matches array
         const initialMatches = this._initializeMatchesArray();
-        console.log('initialMatches: ', initialMatches);
         this.setState({
             provisionalMatches: initialMatches,
             initialMatchesOnTurn: initialMatches,
+            // Starting player is based on whether or not the userGoesFirst
             currentPlayer: this.userGoesFirst ? this.PLAYER_USER : this.PLAYER_AI
         });
     }
 
     render() { 
-        // Game is made up of these pieces 
-        // 1. Rows of macthes visualized someway - whole row is based on the selected visualizer
-        // 2. Toggle to determine who should be going first
-        // 3. Dropdown for how we want to visualize the matches - iin terms of 
-        // 4. Done button to signal a player's move is over 
-        
-        // Game mechanics consist of 
-        // If in lose condition, current player loses
-        // 
-        // Else, Current player (whoever that is) makes their move: 
-        //  IF Currentplayer is the user, then we wait until the done button is clicked to lock in changes 
-            // Locking in might map directly onto the AI making a move
-        // If Currentplayer is the AI we calculate the optimal number of 
-            //   Possiubly have some stochasiticity that can map onto the likelihood that the AI makes the imperfect play
-        // Loop
-
-        // Subtle Game Details: 
-        // Row should highlight on hover when no row has been selected; 
-        // Each row should have +/- buttons 
-        // 
         return (
             <Fragment>
                 <MatchesOriginal

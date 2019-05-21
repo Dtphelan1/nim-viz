@@ -5,7 +5,6 @@ export default function Match() {
     return (
         <img
             src="matchstick.png"
-            onClick={this.handleClick}
             style={{
                 'width': dimension,
                 'height': dimension,
