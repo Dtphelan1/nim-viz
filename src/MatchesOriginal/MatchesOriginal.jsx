@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Match from "../Match/Match.jsx";
 import MatchModifiers from "../MatchModifiers/MatchModifiers.jsx";
 import './MatchesOriginal.css'
@@ -6,7 +6,7 @@ import _ from 'lodash';
 export default function MatchesOriginal (props) {
     const { provisionalMatches, initialMatchesOnTurn, incrementMatches, decrementMatches } = props;
     return (
-        <Fragment>
+        <div id="match-original-game-container">
             {provisionalMatches.map((count, i) => {
                 return (
                     <div className="match-row" key={i}>
@@ -26,7 +26,6 @@ export default function MatchesOriginal (props) {
                     </div>
                 );
             })}
-
-        </Fragment>
+        </div>
     );
 }

@@ -17,7 +17,7 @@ class App extends Component {
             <TransitionGroup>
                 <CSSTransition
                     key={location.key}
-                    timeout={3000}
+                    timeout={1000}
                 >
                     <Switch location={location}>
                         <Route exact path="/" component={WrappedTitlePage}/>

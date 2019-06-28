@@ -17,10 +17,10 @@ export default function TurnActionBar(props) {
         resetTurn();
     }
     return (
-        <div>
+        <div id="turn-action-bar">
             <button className="btn btn-outline-primary" onClick={handleRestartClick}>Restart Game</button>
-            <button className="btn btn-outline-primary" onClick={handleResetClick}>Reset</button>
-            <button className="btn btn-outline-primary" onClick={handleDoneClick}>Done</button>
+            <button className="btn btn-outline-primary" onClick={handleResetClick}>Reset Turn</button>
+            <button className="btn btn-outline-primary" onClick={handleDoneClick}>Turn Finished</button>
         </div> 
     );
 }

@@ -1,7 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import MatchesOriginal from '../MatchesOriginal/MatchesOriginal.jsx';
 import TurnActionBar from '../TurnActionBar/TurnActionBar.jsx';
 import _ from 'lodash';
+import './MatchGame.css';
 // import MatchesLeftCollapsed from './MatchesLeftCollapsed.jsx'
 // import MatchesAsDecimal from './MatchesAsDecimal.jsx'
 // import MatchesAsBinary from './MatchesAsBinary.jsx'
@@ -262,7 +263,7 @@ export default class MatchGame extends Component {
 
     render() { 
         return (
-            <Fragment>
+            <div id="match-game-container">
                 <MatchesOriginal
                     provisionalMatches={this.state.provisionalMatches}
                     initialMatchesOnTurn={this.state.initialMatchesOnTurn}
@@ -274,7 +275,7 @@ export default class MatchGame extends Component {
                     resetTurn={this.resetTurn}
                     finalizeTurn={this.finalizeTurn}
                 />
-            </Fragment>
+            </div>
         );
     }
 }
