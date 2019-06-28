@@ -1,0 +1,21 @@
+.route { 
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+  }
+  .enter {
+    opacity: 0;
+}
+.enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in;
+    transition-delay: 500ms;
+  }
+  .exit {
+    opacity: 1;
+  }
+  .exit-active {
+    opacity: 0;
+    transition: opacity 300ms ease-in;
+  }

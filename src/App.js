@@ -1,20 +1,40 @@
-import React from 'react';
-import MatchGame from './MatchGame/MatchGame.jsx';
+import React, { Component } from 'react';
+import MatchGame from './MatchGame/MatchGame.jsx'; 
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import './App.css';
+import TitlePage from './TitlePage/TitlePage.jsx';
+import TransitionRouteWrapper from './TransitionRouteWrapper/TransitionRouteWrapper.jsx';
 
-function App() {
-  return (
-    <div className="App">
-      <h1>
-        N I M 
-      </h1>
-      <p>
-        This would be a description about how to play Nim and how different visualizations have impacts on how we process information.
-      </p>
-
-      <MatchGame/>
-    </div>
-  );
+class App extends Component {
+    routerRender = ({location}) => { 
+        // console.log(location.key);
+        console.log('location: ', location);
+        const WrappedTitlePage = TransitionRouteWrapper(TitlePage)
+        const WrappedLearnPage = TransitionRouteWrapper(MatchGame)
+        const WrappedPlayPage = TransitionRouteWrapper(MatchGame)
+        return (
+            <TransitionGroup>
+                <CSSTransition
+                    key={location.key}
+                    timeout={3000}
+                >
+                    <Switch location={location}>
+                        <Route exact path="/" component={WrappedTitlePage}/>
+                        <Route path="/learn" component={WrappedLearnPage}/>
+                        <Route path="/play" component={WrappedPlayPage}/>
+                    </Switch>
+                </CSSTransition>
+            </TransitionGroup>
+        );
+    }
+    render() {
+        return (
+            <Router>
+                <Route render={this.routerRender}/>
+            </Router>
+        );
+    }
 }
 
 export default App;
