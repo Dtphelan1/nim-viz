@@ -12,7 +12,8 @@
 .match-row {
   display: flex;
   align-items: center;
-  width: 900px;
+  justify-content: center;
+  height: 80px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -22,7 +23,7 @@
 }
 
 .matches-fixed-width-container { 
-  width: 700px;
+  width: 550px;
   display: flex;
   justify-content: center;
 }

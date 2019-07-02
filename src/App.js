@@ -8,8 +8,6 @@ import TransitionRouteWrapper from './TransitionRouteWrapper/TransitionRouteWrap
 
 class App extends Component {
     routerRender = ({location}) => { 
-        // console.log(location.key);
-        console.log('location: ', location);
         const WrappedTitlePage = TransitionRouteWrapper(TitlePage)
         const WrappedLearnPage = TransitionRouteWrapper(MatchGame)
         const WrappedPlayPage = TransitionRouteWrapper(MatchGame)

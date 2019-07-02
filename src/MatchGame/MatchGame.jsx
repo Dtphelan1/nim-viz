@@ -274,6 +274,7 @@ export default class MatchGame extends Component {
                     restartGame={this.restartGame}
                     resetTurn={this.resetTurn}
                     finalizeTurn={this.finalizeTurn}
+                    hasChangeOccurred={_.isEqual(this.state.provisionalMatches, this.state.initialMatchesOnTurn)}
                 />
             </div>
         );
