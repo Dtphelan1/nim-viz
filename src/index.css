@@ -12,3 +12,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+/* Below are instance-specific modifications to the bootstrap defaults */
+.jumbotron {
+  background: #ffffff;
+}
+
+.text-center { 
+  text-align: center;
+}

@@ -1,21 +1,23 @@
 .route { 
-    position: absolute;
+    position: relative;
     left: 0;
     right: 0;
     top: 0;
-  }
-  .enter {
+    height: calc(100vh - 70px);
+    width: 100vw;
+}
+.enter {
     opacity: 0;
 }
 .enter-active {
     opacity: 1;
     transition: opacity 300ms ease-in;
     transition-delay: 500ms;
-  }
-  .exit {
+}
+.exit {
     opacity: 1;
-  }
-  .exit-active {
+}
+.exit-active {
     opacity: 0;
     transition: opacity 300ms ease-in;
-  }
+}

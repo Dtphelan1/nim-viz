@@ -1,8 +1,9 @@
 import React from 'react';
 import './TurnActionBar.css'
+import ForceAIMoveButton from '../ForceAIMoveButton/ForceAIMoveButton';
 
 export default function TurnActionBar(props) {
-    const { restartGame, resetTurn, finalizeTurn, hasChangeOccurred } = props;
+    const { restartGame, resetTurn, finalizeTurn, hasChangeOccurred, isFirstTurn, handleForceAIMoveButton } = props;
 
     function handleRestartClick(e) { 
         e.preventDefault();
@@ -16,12 +17,20 @@ export default function TurnActionBar(props) {
         e.preventDefault();
         resetTurn();
     }
+    function handleAIMoveClick(e) { 
+        e.preventDefault();
+        handleForceAIMoveButton();
+    }
 
     return (
         <div id="turn-action-bar">
             <button className="btn btn-outline-primary" onClick={handleRestartClick}>Restart Game</button>
-            <button className="btn btn-outline-primary" disabled={hasChangeOccurred} onClick={handleResetClick}>Reset Turn</button>
-            <button className="btn btn-outline-primary" disabled={hasChangeOccurred} onClick={handleDoneClick}>Turn Finished</button>
+            <button className="btn btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleResetClick}>Reset Turn</button>
+            <button className="btn btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleDoneClick}>Turn Finished</button>
+            <ForceAIMoveButton
+                isFirstTurn={isFirstTurn}
+                handleForceAIMoveButton={handleAIMoveClick}
+            />
         </div> 
     );
 }

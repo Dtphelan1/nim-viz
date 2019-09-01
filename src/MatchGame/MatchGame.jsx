@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router'
 import MatchesOriginal from '../MatchesOriginal/MatchesOriginal.jsx';
 import TurnActionBar from '../TurnActionBar/TurnActionBar.jsx';
+import ForceAIMoveButton from '../ForceAIMoveButton/ForceAIMoveButton.js';
 import _ from 'lodash';
-import './MatchGame.css';
 // import MatchesLeftCollapsed from './MatchesLeftCollapsed.jsx'
 // import MatchesAsDecimal from './MatchesAsDecimal.jsx'
 // import MatchesAsBinary from './MatchesAsBinary.jsx'
@@ -40,17 +41,22 @@ export default class MatchGame extends Component {
         this.state = {
             provisionalMatches: matchCounts,
             initialMatchesOnTurn: matchCounts,
-            currentPlayer: this.PLAYER_USER
+            currentPlayer: this.PLAYER_USER,
+            isFirstTurn: true,
+            winner: undefined
         }
     }
 
     // Handle the automated turns of the AI anytime the screen updates
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (_.max(this.state.initialMatchesOnTurn) === 0) {
+        if (_.max(this.state.initialMatchesOnTurn) === 0 && !this.state.winner) {
             // First - check to see if there is a winner:
             const winner = this.state.currentPlayer === this.PLAYER_AI ? "AI" : "User";
             // The winner is the first person to start their turn with a 0 maxMatches
             console.log("Congratulations on winning " + winner + "!");
+            this.setState({
+                winner
+            });
         } else if(this.state.currentPlayer === this.PLAYER_AI) { 
             // Else, if the AI's turn is up let the algo go!
             this._AITurn()
@@ -208,32 +214,55 @@ export default class MatchGame extends Component {
     _AITurn= () =>{
         // Strategy can be broken up into two modes: Endgame and typical
         // First, check to see if we are in an endgame orientation - specifically, if there is <= 1 row left with more than one match
-        const curMatches = this.state.provisionalMatches;
+        const curMatches = this.state.initialMatchesOnTurn;
         const isEndGame = _.reduce(curMatches, (acc, count) => count > 1 ? acc + 1 : acc, 0) <= 1;
+        console.log('isEndGame: ', isEndGame);
         if (isEndGame) {
             // Calc the # of remaining turns by looking at the non-zero rows
             const remainingTurns = _.reduce(curMatches, (acc, count) => count > 0 ? acc + 1 : acc, 0);
+            console.log('remainingTurns: ', remainingTurns);
             // Get the max value 
             const maxVal = _.max(curMatches);
             const indexOfMax = curMatches.indexOf(maxVal)
+            
             const newMatches = [...curMatches];
-            // Subtract the maxVal - unless the number
-            newMatches[indexOfMax] -= (maxVal - (remainingTurns % 2));
+            // Get the number of matches to remove
+            const matchesToRemove = (maxVal - (remainingTurns % 2));
+            // If the matchesToREmove is zero, the AI cannot win; just remove the maxVal
+            if (matchesToRemove === 0) { 
+                newMatches[indexOfMax] -= maxVal;
+            } else { 
+                newMatches[indexOfMax] -= matchesToRemove;
+            }
             this.finalizeTurn(newMatches);
         } else { 
             // First, get the nim sum of all the remaining match-rows, i.e. XOR all counts together
             const nimSum = _.reduce(curMatches, (nimSum, count) => count ^ nimSum, 0);
-            console.log('nimSum: ', nimSum);
+            // console.log('nimSum: ', nimSum);
             // Then, get the next value to remove and the index from the nimSum - if there is such a move
-            const [index, valueToRemove] = this._getOptimalMoveBasedOnSum(nimSum);
+            let [index, valueToRemove] = this._getOptimalMoveBasedOnSum(nimSum);
             if (index === -1) {
-                console.log("Index is -1 - no traditional removals available");
-            } else {
-                const newMatches = [...curMatches];
-                newMatches[index] -= valueToRemove;
-                console.log('newMatches: ', newMatches);
-                this.finalizeTurn(newMatches)
+                // If there's on optimal move, pick a random row, pick a random number of matches;
+                const validRowsIndexes = _.reduce(curMatches, (acc, numberOfMatches, i) => {
+                    if (numberOfMatches === 0) {
+                        return acc;
+                    } else {
+                        acc.push(i);
+                        return acc;
+                    }
+                }, []);
+                // Pick a randomRow by index
+                index = validRowsIndexes[Math.floor(Math.random()*(validRowsIndexes.length))];
+                // Get the matches in that row by looking at the curMatches array
+                const randomRowMatchCount = curMatches[index];
+                // To get a random amount of matches to remove, use random to seed a valu between 0..1
+                // Multiply that my the matchCount to map it between 0...matchCount - 1; 
+                // Add one to make sure we remove between 1...matchCount many matches.
+                valueToRemove = Math.floor(Math.random()*randomRowMatchCount) + 1
             }
+            const newMatches = [...curMatches];
+            newMatches[index] -= valueToRemove;
+            this.finalizeTurn(newMatches)
         }
     }
 
@@ -245,6 +274,7 @@ export default class MatchGame extends Component {
         this.setState({
             initialMatchesOnTurn: newMatches,
             provisionalMatches: newMatches,
+            isFirstTurn: false,
             currentPlayer: nextPlayer
         });
     }
@@ -256,25 +286,46 @@ export default class MatchGame extends Component {
         this.setState({
             provisionalMatches: initialMatches,
             initialMatchesOnTurn: initialMatches,
+            isFirstTurn: true,
             // Starting player is based on whether or not the userGoesFirst
             currentPlayer: this.userGoesFirst ? this.PLAYER_USER : this.PLAYER_AI
         });
     }
 
-    render() { 
+    handleForceAIMoveButton = () => { 
+        this.setState({
+            currentPlayer: this.PLAYER_AI
+        });
+    }
+
+    render() {
+        const hasChangeOccurred = !_.isEqual(this.state.provisionalMatches, this.state.initialMatchesOnTurn);
+
+        // If there's a winner, redirect to the winner page
+        if (this.state.winner) { 
+            return <Redirect push to={{
+                pathname: "/gameover",
+                search: "?winner=" + this.state.winner
+            }}/>
+        }
+        // Else, just render the current game
         return (
             <div id="match-game-container">
+                {/* TODO: Make this use the application state to determine the current version of the game that's loaded */}
                 <MatchesOriginal
                     provisionalMatches={this.state.provisionalMatches}
                     initialMatchesOnTurn={this.state.initialMatchesOnTurn}
                     incrementMatches={this.incrementMatches}
                     decrementMatches={this.decrementMatches}
-                />
+                    hasChangeOccurred={hasChangeOccurred}
+                    />
                 <TurnActionBar
+                    isFirstTurn={this.state.isFirstTurn}
                     restartGame={this.restartGame}
                     resetTurn={this.resetTurn}
                     finalizeTurn={this.finalizeTurn}
-                    hasChangeOccurred={_.isEqual(this.state.provisionalMatches, this.state.initialMatchesOnTurn)}
+                    handleForceAIMoveButton={this.handleForceAIMoveButton}
+                    hasChangeOccurred={hasChangeOccurred}
                 />
             </div>
         );

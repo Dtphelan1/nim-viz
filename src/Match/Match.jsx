@@ -1,14 +1,11 @@
 import React from 'react';
+import './Match.css'
 
 export default function Match() {
-    const dimension = 75;
     return (
         <img
-            src="matchstick.png"
-            style={{
-                'width': dimension,
-                'height': dimension,
-            }}
+            src="matchstick-2.png"
+            className="match"
             alt="One of the matches in this row"
         />
     );

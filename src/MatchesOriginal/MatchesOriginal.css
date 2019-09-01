@@ -1,11 +1,10 @@
 #match-original-game-container {
   width: 100%;
-  padding: 100px 0 50px 0;
+  padding: 50px 0 50px 0;
 }
 
 .matches-original {
   display: flex;
-  height: 100vh;
   align-items: center;
 }
 
@@ -13,13 +12,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 80px;
   margin-left: auto;
   margin-right: auto;
+  margin: 20px 0;
+  height: 115px;
+}
+
+@media screen and (max-width: 780px) {
+  .match-row { 
+      height: 80px;
+  }
+}
+
+@media screen and (max-width: 590px) {
+  .match-row { 
+      height: 70px;
+  }
+}
+
+.match-row:first-child {
+  margin-top: 0px;
+}
+
+.match-row:last-child {
+  margin-bottom: 0px;
 }
 
 .match-row:hover {
-  background: #fcc;
+  background: rgba(255, 193, 7, 0.21);
 }
 
 .matches-fixed-width-container { 

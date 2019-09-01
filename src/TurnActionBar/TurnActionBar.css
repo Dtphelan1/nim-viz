@@ -1,7 +1,10 @@
 #turn-action-bar {
     position: absolute;
     bottom: 0;
+    left: 0;
+    right: 0;
     width: 100%;
+    max-width: 900px;
     margin: 30px auto;
     display: flex;
     justify-content: space-evenly;

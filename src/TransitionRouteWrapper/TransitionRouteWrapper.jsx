@@ -5,7 +5,7 @@ export default function TransitionRouteWrapper(WrappedComponent) {
     function ExtendedComponent(props) { 
         return (
             <div className="route">
-                <WrappedComponent>
+                <WrappedComponent location={props.location}>
                     {props.children}
                 </WrappedComponent>
             </div>
