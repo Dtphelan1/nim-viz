@@ -3,7 +3,8 @@
     left: 0;
     right: 0;
     top: 0;
-    height: calc(100vh - 70px);
+    height: 80vh;
+    /* height: calc(100vh - 70px); */
     width: 100vw;
 }
 .enter {
