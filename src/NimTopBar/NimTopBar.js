@@ -8,9 +8,6 @@ export default function NimTopBar(props) {
             <nav className="navbar mb-2">
                 <Link className="navbar-brand" to="/">Digital Nim</Link>
             </nav>
-            {/* <div className=>
-
-            </div> */}
         </React.Fragment>
     );
 }
