@@ -1,33 +1,13 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router'
-import MatchesOriginal from '../MatchesOriginal/MatchesOriginal.jsx';
+import MatchVisualizerFactory from '../MatchVisualizers/MatchVisualizerFactory.js';
 import TurnActionBar from '../TurnActionBar/TurnActionBar.jsx';
+import GameModeSelectionBar from '../GameModeSelectionBar/GameModeSelectionBar.js';
 import _ from 'lodash';
-// import MatchesLeftCollapsed from './MatchesLeftCollapsed.jsx'
-// import MatchesAsDecimal from './MatchesAsDecimal.jsx'
-// import MatchesAsBinary from './MatchesAsBinary.jsx'
 
 export default class MatchGame extends Component {
     constructor(props) { 
         super(props);
-        this.matchVizOptions = [
-            {
-                name: "Original Matches",
-                visualizer: MatchesOriginal
-            },
-            // {
-            //     name: "Matches Left-Collapsed",
-            //     visualizer: MatchesLeftCollapsed
-            // },
-            // {
-            //     name: "Decimal Numbers",
-            //     visualizer: MatchesAsDecimal
-            // },
-            // {
-            //     name: "Binary Numbers",
-            //     visualizer: MatchesAsBinary
-            // },
-        ]
         this.PLAYER_USER = 0;
         this.PLAYER_AI = 1;
 
@@ -35,12 +15,14 @@ export default class MatchGame extends Component {
         // TODO: Move into state once modifiable;
         this.numberOfRows = 4;
         this.userGoesFirst = true;
+        this.MatchVisualizerFactory = new MatchVisualizerFactory();
 
         const matchCounts = this._initializeMatchesArray()
         this.state = {
             provisionalMatches: matchCounts,
             initialMatchesOnTurn: matchCounts,
             currentPlayer: this.PLAYER_USER,
+            currentMatchVisualizer: this.MatchVisualizerFactory.initialVisualizer(),
             isFirstTurn: true,
             winner: undefined
         }
@@ -291,15 +273,23 @@ export default class MatchGame extends Component {
         });
     }
 
+    // Sets the current player to be the AI
     handleForceAIMoveButton = () => { 
         this.setState({
             currentPlayer: this.PLAYER_AI
         });
     }
 
+    // Takes a given mode and selects it 
+    handleModeSelection = (modeId) => { 
+        this.setState({
+            currentMatchVisualizer: this.MatchVisualizerFactory.getVisualizer(modeId)
+        })
+    }
+
     render() {
         const hasChangeOccurred = !_.isEqual(this.state.provisionalMatches, this.state.initialMatchesOnTurn);
-
+        const CurrentMatchVisualizer = this.state.currentMatchVisualizer;
         // If there's a winner, redirect to the winner page
         if (this.state.winner) { 
             return <Redirect push to={{
@@ -310,14 +300,18 @@ export default class MatchGame extends Component {
         // Else, just render the current game
         return (
             <div id="match-game-container">
-                {/* TODO: Make this use the application state to determine the current version of the game that's loaded */}
-                <MatchesOriginal
+                <GameModeSelectionBar
+                    possibleModes={this.MatchVisualizerFactory.allVizualizerOptions()}
+                    handleModeSelection={this.handleModeSelection}
+                />
+                {CurrentMatchVisualizer && <CurrentMatchVisualizer
                     provisionalMatches={this.state.provisionalMatches}
                     initialMatchesOnTurn={this.state.initialMatchesOnTurn}
                     incrementMatches={this.incrementMatches}
                     decrementMatches={this.decrementMatches}
                     hasChangeOccurred={hasChangeOccurred}
-                    />
+                    numberOfRows={this.numberOfRows}
+                />}
                 <TurnActionBar
                     isFirstTurn={this.state.isFirstTurn}
                     restartGame={this.restartGame}

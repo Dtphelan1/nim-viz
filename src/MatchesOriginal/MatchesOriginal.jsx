@@ -20,7 +20,6 @@ export default function MatchesOriginal (props) {
                         </span>
                         <MatchModifiers
                             currentMatch={i}
-                            //TODO: Make this more generic
                             maxMatches={count === initialMatchesOnTurn[i]}
                             minMatches={count === 0}
                             incrementMatches={incrementMatches}
