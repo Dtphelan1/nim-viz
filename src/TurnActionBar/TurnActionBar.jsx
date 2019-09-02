@@ -1,6 +1,5 @@
 import React from 'react';
 import './TurnActionBar.css'
-import ForceAIMoveButton from '../ForceAIMoveButton/ForceAIMoveButton';
 
 export default function TurnActionBar(props) {
     const { restartGame, resetTurn, finalizeTurn, hasChangeOccurred, isFirstTurn, handleForceAIMoveButton } = props;
@@ -23,14 +22,36 @@ export default function TurnActionBar(props) {
     }
 
     return (
-        <div id="turn-action-bar">
-            <ForceAIMoveButton
-                isFirstTurn={isFirstTurn}
-                handleForceAIMoveButton={handleAIMoveClick}
-            />
-            <button className="btn btn-outline-primary" onClick={handleRestartClick}>Restart Game</button>
-            <button className="btn btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleResetClick}>Reset Turn</button>
-            <button className="btn btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleDoneClick}>Turn Finished</button>
-        </div> 
+        <React.Fragment>
+            <div id="turn-action-bar" className="d-none d-sm-flex">
+                <button type="button" className="btn btn-outline-primary" onClick={handleAIMoveClick} disabled={!isFirstTurn}>
+                    AI Moves First
+                </button>
+                <button className="btn btn-outline-primary" onClick={handleRestartClick}>
+                    Restart Game
+                </button>
+                <button className="btn btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleResetClick}>
+                    Reset Turn
+                </button>
+                <button className="btn btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleDoneClick}>
+                    Turn Finished
+                </button>
+            </div> 
+            {/* For display on small-screen */}
+            <div id="turn-action-bar" className="d-flex d-sm-none">
+                <button type="button" className="btn btn-sm btn-outline-primary" onClick={handleAIMoveClick} disabled={!isFirstTurn}>
+                    AI First
+                </button>
+                <button className="btn btn-sm btn-outline-primary" onClick={handleRestartClick}>
+                    Restart
+                </button>
+                <button className="btn btn-sm btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleResetClick}>
+                    Reset
+                </button>
+                <button className="btn btn-sm btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleDoneClick}>
+                    Finished
+                </button>
+            </div> 
+        </React.Fragment>
     );
 }

@@ -27,6 +27,7 @@
 @media screen and (max-width: 590px) {
   .match-row { 
       height: 70px;
+      margin: 0;
   }
   #match-original-game-container {
     width: 100%;
