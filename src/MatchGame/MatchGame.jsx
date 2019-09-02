@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router'
 import MatchesOriginal from '../MatchesOriginal/MatchesOriginal.jsx';
 import TurnActionBar from '../TurnActionBar/TurnActionBar.jsx';
-import ForceAIMoveButton from '../ForceAIMoveButton/ForceAIMoveButton.js';
 import _ from 'lodash';
 // import MatchesLeftCollapsed from './MatchesLeftCollapsed.jsx'
 // import MatchesAsDecimal from './MatchesAsDecimal.jsx'
