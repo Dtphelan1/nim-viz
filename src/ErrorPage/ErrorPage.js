@@ -10,7 +10,7 @@ export default function ErrorPage(props) {
             </div>
             <div className="d-flex justify-content-around m-5" id="nav-btns">
                 <LinkButton pathname="/" displayText="Home"/>
-                <LinkButton pathname="/learn" displayText="Learn More"/>
+                {/* <LinkButton pathname="/learn" displayText="Learn More"/> */}
                 <LinkButton pathname="/play" displayText="Play Nim"/>
             </div>
         </React.Fragment>

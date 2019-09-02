@@ -9,8 +9,8 @@ export default function WinPage(props) {
                 <h1 className="display-4 mb-5">You beat the AI!</h1>
             </div>
             <div className="d-flex justify-content-around m-5" id="nav-btns">
-                <LinkButton pathname="/play" displayText="Play Again"/>
                 <LinkButton pathname="/" displayText="Back Home"/>
+                <LinkButton pathname="/play" displayText="Play Again"/>
             </div>
         </React.Fragment>
     );

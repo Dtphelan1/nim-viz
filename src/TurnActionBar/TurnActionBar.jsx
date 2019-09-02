@@ -24,13 +24,13 @@ export default function TurnActionBar(props) {
 
     return (
         <div id="turn-action-bar">
-            <button className="btn btn-outline-primary" onClick={handleRestartClick}>Restart Game</button>
-            <button className="btn btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleResetClick}>Reset Turn</button>
-            <button className="btn btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleDoneClick}>Turn Finished</button>
             <ForceAIMoveButton
                 isFirstTurn={isFirstTurn}
                 handleForceAIMoveButton={handleAIMoveClick}
             />
+            <button className="btn btn-outline-primary" onClick={handleRestartClick}>Restart Game</button>
+            <button className="btn btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleResetClick}>Reset Turn</button>
+            <button className="btn btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleDoneClick}>Turn Finished</button>
         </div> 
     );
 }
