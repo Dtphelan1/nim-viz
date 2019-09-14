@@ -5,7 +5,7 @@ export default function PlayButton(props) {
     const { pathname, displayText } = props;
     return (
         <Link to={pathname}>
-            <button className="btn btn-lg btn-outline-primary">
+            <button className="btn btn-lg btn-primary">
                 {displayText}
             </button>
         </Link>

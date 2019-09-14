@@ -1,8 +1,3 @@
-#match-original-game-container {
-  width: 100%;
-  padding: 50px 0;
-}
-
 .matches-original {
   display: flex;
   align-items: center;
@@ -14,7 +9,6 @@
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
-  margin: 20px 0;
   height: 115px;
 }
 
@@ -29,18 +23,6 @@
       height: 70px;
       margin: 0;
   }
-  #match-original-game-container {
-    width: 100%;
-    padding: 25px 0;
-  }
-}
-
-.match-row:first-child {
-  margin-top: 0px;
-}
-
-.match-row:last-child {
-  margin-bottom: 0px;
 }
 
 .match-row:hover {
@@ -51,4 +33,8 @@
   width: 550px;
   display: flex;
   justify-content: center;
+}
+
+.row-changed {
+  background: rgba(67, 141, 252, 0.21) !important;
 }

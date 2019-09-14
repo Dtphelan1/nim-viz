@@ -1,0 +1,10 @@
+#match-game-container { 
+    height: 100%;
+    width: 100%;
+}
+
+#match-game-visualization {
+    width: 100%;
+    height: calc(100% - 65px - 50px);
+    padding: 25px 0;
+}

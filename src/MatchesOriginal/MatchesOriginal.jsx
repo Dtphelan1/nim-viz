@@ -6,16 +6,20 @@ import _ from 'lodash';
 export default function MatchesOriginal (props) {
     const { provisionalMatches, initialMatchesOnTurn, incrementMatches, decrementMatches, hasChangeOccurred } = props;
     return (
-        <div id="match-original-game-container">
+        <React.Fragment>
             {provisionalMatches.map((count, i) => {
                 // For every row of matches, if a change has occured, we want to lock any rows that aren't in the process of being changed 
                 // This ensures that only one row can be modified at a given time
-                const isRowLocked = hasChangeOccurred && (count === initialMatchesOnTurn[i]);
+                const hasRowChanged = (count !== initialMatchesOnTurn[i])
+                const isRowLocked = hasChangeOccurred && !hasRowChanged
                 return (
-                    <div className="match-row" key={i}>
+                    <div className={"match-row" + (hasRowChanged ? " row-changed" : "")} key={i}>
                         <span className="matches-fixed-width-container">
                             {_.times(count, (i) => { 
                                 return <Match key={i}/>
+                            })}
+                            {_.times(initialMatchesOnTurn[i] - count, (i) => { 
+                                return <Match key={i} removed={true}/>
                             })}
                         </span>
                         <MatchModifiers
@@ -29,6 +33,6 @@ export default function MatchesOriginal (props) {
                     </div>
                 );
             })}
-        </div>
+        </React.Fragment>
     );
 }

@@ -4,6 +4,11 @@
     margin: 20px;
 }
 
+.removed {
+    border: 1px dashed;
+    border-color: rgba(121, 121, 121, 0.76);
+}
+
 @media screen and (max-width: 780px) {
     .match { 
         width: 18px;

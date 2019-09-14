@@ -3,6 +3,7 @@ import { Redirect } from 'react-router'
 import MatchVisualizerFactory from '../MatchVisualizers/MatchVisualizerFactory.js';
 import TurnActionBar from '../TurnActionBar/TurnActionBar.jsx';
 import GameModeSelectionBar from '../GameModeSelectionBar/GameModeSelectionBar.js';
+import './MatchGame.css'
 import _ from 'lodash';
 
 export default class MatchGame extends Component {
@@ -304,14 +305,18 @@ export default class MatchGame extends Component {
                     possibleModes={this.MatchVisualizerFactory.allVizualizerOptions()}
                     handleModeSelection={this.handleModeSelection}
                 />
-                {CurrentMatchVisualizer && <CurrentMatchVisualizer
-                    provisionalMatches={this.state.provisionalMatches}
-                    initialMatchesOnTurn={this.state.initialMatchesOnTurn}
-                    incrementMatches={this.incrementMatches}
-                    decrementMatches={this.decrementMatches}
-                    hasChangeOccurred={hasChangeOccurred}
-                    numberOfRows={this.numberOfRows}
-                />}
+                <div id="match-game-visualization" className="d-flex align-items-center">
+                    <div className="w-100">
+                        {CurrentMatchVisualizer && <CurrentMatchVisualizer
+                            provisionalMatches={this.state.provisionalMatches}
+                            initialMatchesOnTurn={this.state.initialMatchesOnTurn}
+                            incrementMatches={this.incrementMatches}
+                            decrementMatches={this.decrementMatches}
+                            hasChangeOccurred={hasChangeOccurred}
+                            numberOfRows={this.numberOfRows}
+                        />}
+                    </div>
+                </div>
                 <TurnActionBar
                     isFirstTurn={this.state.isFirstTurn}
                     restartGame={this.restartGame}

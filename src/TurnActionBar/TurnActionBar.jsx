@@ -24,31 +24,31 @@ export default function TurnActionBar(props) {
     return (
         <React.Fragment>
             <div id="turn-action-bar" className="d-none d-sm-flex">
-                <button type="button" className="btn btn-outline-primary" onClick={handleAIMoveClick} disabled={!isFirstTurn}>
+                <button type="button" className="btn btn-primary" onClick={handleAIMoveClick} disabled={!isFirstTurn}>
                     AI Moves First
                 </button>
-                <button className="btn btn-outline-primary" onClick={handleRestartClick}>
+                <button className="btn btn-primary" onClick={handleRestartClick}>
                     Restart Game
                 </button>
-                <button className="btn btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleResetClick}>
+                <button className="btn btn-primary" disabled={!hasChangeOccurred} onClick={handleResetClick}>
                     Reset Turn
                 </button>
-                <button className="btn btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleDoneClick}>
+                <button className="btn btn-primary" disabled={!hasChangeOccurred} onClick={handleDoneClick}>
                     Turn Finished
                 </button>
             </div> 
             {/* For display on small-screen */}
             <div id="turn-action-bar" className="d-flex d-sm-none">
-                <button type="button" className="btn btn-sm btn-outline-primary" onClick={handleAIMoveClick} disabled={!isFirstTurn}>
+                <button type="button" className="btn btn-sm btn-primary" onClick={handleAIMoveClick} disabled={!isFirstTurn}>
                     AI First
                 </button>
-                <button className="btn btn-sm btn-outline-primary" onClick={handleRestartClick}>
+                <button className="btn btn-sm btn-primary" onClick={handleRestartClick}>
                     Restart
                 </button>
-                <button className="btn btn-sm btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleResetClick}>
+                <button className="btn btn-sm btn-primary" disabled={!hasChangeOccurred} onClick={handleResetClick}>
                     Reset
                 </button>
-                <button className="btn btn-sm btn-outline-primary" disabled={!hasChangeOccurred} onClick={handleDoneClick}>
+                <button className="btn btn-sm btn-primary" disabled={!hasChangeOccurred} onClick={handleDoneClick}>
                     Finished
                 </button>
             </div> 
