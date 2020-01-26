@@ -4,11 +4,30 @@ import './NimTopBar.css';
 
 export default function NimTopBar(props) {
     return (
-        <React.Fragment>
-            <nav className="navbar mb-2">
-                <Link className="navbar-brand" to="/">Digital Nim</Link>
+        <>
+            <nav className="navbar navbar-light navbar-expand-md mb-2">
+                <Link className="navbar-brand" to="/">
+                    <img src="matchstick-2.png" className="pl-1 pr-1" style={{height: "30px" }}/>
+                    Digital Nim
+                </Link>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <Link className="nav-link" to="/play">Play</Link>
+                        </li>
+                        <li class="nav-item">
+                            <Link className="nav-link" to="/learn">About Nim</Link>
+                        </li>
+                        <li class="nav-item">
+                            <Link className="nav-link" to="/winning">How to Win</Link>
+                        </li>
+                    </ul>
+                </div>
             </nav>
-        </React.Fragment>
+        </>
     );
 }
 

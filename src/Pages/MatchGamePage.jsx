@@ -3,10 +3,10 @@ import { Redirect } from 'react-router'
 import MatchVisualizerFactory from '../MatchVisualizers/MatchVisualizerFactory.js';
 import TurnActionBar from '../TurnActionBar/TurnActionBar.jsx';
 import GameModeSelectionBar from '../GameModeSelectionBar/GameModeSelectionBar.js';
-import './MatchGame.css'
+import './MatchGamePage.css'
 import _ from 'lodash';
 
-export default class MatchGame extends Component {
+export default class MatchGamePage extends Component {
     constructor(props) { 
         super(props);
         this.PLAYER_USER = 0;
@@ -300,7 +300,7 @@ export default class MatchGame extends Component {
         }
         // Else, just render the current game
         return (
-            <div id="match-game-container">
+            <div id="match-game-container" className="jumbotron">
                 <GameModeSelectionBar
                     possibleModes={this.MatchVisualizerFactory.allVizualizerOptions()}
                     handleModeSelection={this.handleModeSelection}

@@ -6,7 +6,7 @@ import _ from 'lodash';
 export default function MatchesOriginal (props) {
     const { provisionalMatches, initialMatchesOnTurn, incrementMatches, decrementMatches, hasChangeOccurred } = props;
     return (
-        <React.Fragment>
+        <>
             {provisionalMatches.map((count, i) => {
                 // For every row of matches, if a change has occured, we want to lock any rows that aren't in the process of being changed 
                 // This ensures that only one row can be modified at a given time
@@ -33,6 +33,6 @@ export default function MatchesOriginal (props) {
                     </div>
                 );
             })}
-        </React.Fragment>
+        </>
     );
 }

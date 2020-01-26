@@ -1,8 +1,8 @@
 import React from 'react';
 import queryString from 'query-string'
-import WinPage from '../WinPage/WinPage.js'
-import LosePage from '../LosePage/LosePage.js'
-import ErrorPage from '../ErrorPage/ErrorPage.js'
+import WinPage from './WinPage.js'
+import LosePage from './LosePage.js'
+import ErrorPage from './ErrorPage.js'
 
 
 export default function GameOverPage(props) {

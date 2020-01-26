@@ -29,11 +29,12 @@ export default function MatchesAsBinary(props) {
             {provisionalMatches.map((count, i) => {
                 // For every row of matches, if a change has occured, we want to lock any rows that aren't in the process of being changed 
                 // This ensures that only one row can be modified at a given time
-                const isRowLocked = hasChangeOccurred && (count === initialMatchesOnTurn[i]);
+                const hasRowChanged = (count !== initialMatchesOnTurn[i])
+                const isRowLocked = hasChangeOccurred && !hasRowChanged
                 return (
-                    <div className="match-row" key={i}>
+                    <div className={"match-row" + (hasRowChanged ? " row-changed" : "")} key={i}>
                         <span className="matches-fixed-width-container">
-                            <h1>
+                            <h1 className="float-right">
                                 {_countInBinary(count)}
                             </h1>
                         </span>

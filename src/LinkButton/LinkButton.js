@@ -1,7 +1,7 @@
 import React from 'react'; 
 import { Link } from 'react-router-dom';
 
-export default function PlayButton(props) {
+export default function LinkButton(props) {
     const { pathname, displayText } = props;
     return (
         <Link to={pathname}>
