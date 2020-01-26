@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "fbc044f68161b72e7f6489198988674a",
+    "revision": "06d9983a31a0759d5ad7dc9f6ba2034f",
     "url": "/nim-viz/index.html"
   },
   {
