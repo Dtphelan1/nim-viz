@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "06d9983a31a0759d5ad7dc9f6ba2034f",
+    "revision": "0e8e197d9667e9c67d0aa1bc39049f35",
     "url": "/nim-viz/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/nim-viz/static/css/2.0cb80aa4.chunk.css"
   },
   {
-    "revision": "3f72e15d8eba8fd7c413",
+    "revision": "5622ecf99896e9abf184",
     "url": "/nim-viz/static/css/main.57219058.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/nim-viz/static/js/2.29a1c11d.chunk.js"
   },
   {
-    "revision": "3f72e15d8eba8fd7c413",
-    "url": "/nim-viz/static/js/main.e948772e.chunk.js"
+    "revision": "5622ecf99896e9abf184",
+    "url": "/nim-viz/static/js/main.bb20118d.chunk.js"
   },
   {
     "revision": "a19f2964b1f67dfa0e4b",
