@@ -2,7 +2,7 @@ import React from 'react';
 import './TurnActionBar.css'
 
 export default function TurnActionBar(props) {
-    const { restartGame, resetTurn, finalizeTurn, hasChangeOccurred, isFirstTurn, handleForceAIMoveButton } = props;
+    const { restartGame, finalizeTurn, hasChangeOccurred, isFirstTurn, handleForceAIMoveButton } = props;
 
     function handleRestartClick(e) { 
         e.preventDefault();
@@ -11,10 +11,6 @@ export default function TurnActionBar(props) {
     function handleDoneClick(e) { 
         e.preventDefault();
         finalizeTurn();
-    }
-    function handleResetClick(e) { 
-        e.preventDefault();
-        resetTurn();
     }
     function handleAIMoveClick(e) { 
         e.preventDefault();

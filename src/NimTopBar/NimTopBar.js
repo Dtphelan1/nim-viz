@@ -7,7 +7,7 @@ export default function NimTopBar(props) {
         <>
             <nav className="navbar navbar-light navbar-expand-md mb-2">
                 <Link className="navbar-brand" to="/">
-                    <img src="matchstick-2.png" className="pl-1 pr-1" style={{height: "30px" }}/>
+                    <img src="matchstick-2.png"m alt="subtle matchstick logo to accompany brand name" className="pl-1 pr-1" style={{height: "30px" }}/>
                     Digital Nim
                 </Link>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

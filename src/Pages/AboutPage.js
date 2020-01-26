@@ -12,7 +12,7 @@ export default function TutorialAboutPage(props) {
             </div>
             <div className="row p-2 align-items-center">
                 <div className="col-md-4 p-2 text-center">
-                    <img src="nimrod.png" style={{objectFit: "cover", height: "auto", maxWidth: "200px"}}/>
+                    <img src="nimrod.png" alt="" style={{objectFit: "cover", height: "auto", maxWidth: "200px"}}/>
                 </div>
                 <div className="col-md-8 p-2">
                     <span>
@@ -26,7 +26,7 @@ export default function TutorialAboutPage(props) {
             </div>
             <div className="row p-2 align-items-center">
                 <div className="col-md-4 order-0 order-md-2 p-2 text-center">
-                    <img src="nim-setup.png" style={{objectFit: "cover", height: "auto", maxWidth: "200px"}}/>
+                    <img src="nim-setup.png" alt="Visual pyramid of nim play pieces, matchsticks arranged in rows of 1, 3, 5, and 7." style={{objectFit: "cover", height: "auto", maxWidth: "200px"}}/>
                 </div>
                 <div className="col-md-8 order-1 col-pull-md-8 p-2">
                     <span>

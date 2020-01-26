@@ -8,11 +8,6 @@ import ScrollToTop from './ScrollToTop.js'
 import './App.css';
 
 class App extends Component {
-    constructor(props) { 
-        super(props);
-    }
-
-
     routerRender = ({location}) => { 
         const WrappedTitlePage = TransitionRouteWrapper(TitlePage)
         const WrappedGameOverPage = TransitionRouteWrapper(GameOverPage)
