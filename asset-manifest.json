@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/nim-viz/static/css/main.24ca7a54.chunk.css",
-    "main.js": "/nim-viz/static/js/main.5489cd34.chunk.js",
-    "main.js.map": "/nim-viz/static/js/main.5489cd34.chunk.js.map",
+    "main.css": "/nim-viz/static/css/main.57219058.chunk.css",
+    "main.js": "/nim-viz/static/js/main.e948772e.chunk.js",
+    "main.js.map": "/nim-viz/static/js/main.e948772e.chunk.js.map",
     "runtime~main.js": "/nim-viz/static/js/runtime~main.a3bd41ce.js",
     "runtime~main.js.map": "/nim-viz/static/js/runtime~main.a3bd41ce.js.map",
-    "static/css/2.a8b2508a.chunk.css": "/nim-viz/static/css/2.a8b2508a.chunk.css",
-    "static/js/2.ff979c74.chunk.js": "/nim-viz/static/js/2.ff979c74.chunk.js",
-    "static/js/2.ff979c74.chunk.js.map": "/nim-viz/static/js/2.ff979c74.chunk.js.map",
+    "static/css/2.0cb80aa4.chunk.css": "/nim-viz/static/css/2.0cb80aa4.chunk.css",
+    "static/js/2.29a1c11d.chunk.js": "/nim-viz/static/js/2.29a1c11d.chunk.js",
+    "static/js/2.29a1c11d.chunk.js.map": "/nim-viz/static/js/2.29a1c11d.chunk.js.map",
     "index.html": "/nim-viz/index.html",
-    "precache-manifest.dd989f8c6a52f9033cb32c08db5ad4d7.js": "/nim-viz/precache-manifest.dd989f8c6a52f9033cb32c08db5ad4d7.js",
+    "precache-manifest.8ea92148b02123532cd0bde88f7ac29b.js": "/nim-viz/precache-manifest.8ea92148b02123532cd0bde88f7ac29b.js",
     "service-worker.js": "/nim-viz/service-worker.js",
-    "static/css/2.a8b2508a.chunk.css.map": "/nim-viz/static/css/2.a8b2508a.chunk.css.map",
-    "static/css/main.24ca7a54.chunk.css.map": "/nim-viz/static/css/main.24ca7a54.chunk.css.map"
+    "static/css/2.0cb80aa4.chunk.css.map": "/nim-viz/static/css/2.0cb80aa4.chunk.css.map",
+    "static/css/main.57219058.chunk.css.map": "/nim-viz/static/css/main.57219058.chunk.css.map"
   }
 }
