@@ -1,5 +1,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Developer Notes: 
+- To enable Single Page Application routing on gh-pages, we've followed the instructions detailed [here](https://github.com/rafrex/spa-github-pages)
+
 ## Available Scripts
 
 In the project directory, you can run:
